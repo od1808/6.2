@@ -19,14 +19,14 @@ pipeline {
             post {
                 success {
                         emailext body: "Unit and Integration Tests have passed successfully. Attached are the test logs.", 
-                        to: 'aditiagarwall1603@gmail.com',
+                        to: 'omdesai1808@gmail.com',
                         subject: "Unit and Integration Tests Successful",
                         attachmentsPattern: 'test.log', 
                         attachLog: true 
                     }
                 failure {
                         emailext body: "Unit and Integration Tests have failed. Attached are the test logs.", 
-                        to: 'aditiagarwall1603@gmail.com', 
+                        to: 'omdesai1808@gmail.comm', 
                         subject: "Unit and Integration Tests Failed",
                         attachmentsPattern: 'test.log', 
                         attachLog: true 
@@ -49,14 +49,14 @@ pipeline {
             post {
                 success {
                         emailext body: "Security Scan has completed successfully.Attached are the test logs", 
-                        to: 'aditiagarwall1603@gmail.com', 
+                        to: 'omdesai1808@gmail.com', 
                         subject: "Security Scan Successful",
                         attachmentsPattern: 'test.log', 
                         attachLog: true 
                     }
                 failure {
                         emailext body: "Security Scan has failed.", 
-                        to: 'aditiagarwall1603@gmail.com', 
+                        to: 'omdesai1808@gmail.com', 
                         subject: "Security Scan Failed",
                         attachmentsPattern: 'test.log', 
                         attachLog: true 
