@@ -1,68 +1,89 @@
 pipeline {
     agent any
+
     stages {
         stage('Build') {
             steps {
-                // Use a build automation tool like Maven
-                sh 'mvn clean package'
+                echo "Fetch the source code from ${env.DIRECTORY_PATH}"
+                echo "Compile the code and generate any necessary artifacts"
+                echo "Use Maven for automation"
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                // Use test automation tools like JUnit, TestNG, etc.
-                sh 'run_unit_tests.sh'
-                sh 'run_integration_tests.sh'
+                echo "Unit tests"
+                echo "Integration tests"
+                echo "JUnit (Unit Tests) and Postman (Integration Tests)"
             }
-        }
+            post {
+                success {
+                        emailext body: "Unit and Integration Tests have passed successfully. Attached are the test logs.", 
+                        to: 'aditiagarwall1603@gmail.com',
+                        subject: "Unit and Integration Tests Successful",
+                        attachmentsPattern: 'test.log', 
+                        attachLog: true 
+                    }
+                failure {
+                        emailext body: "Unit and Integration Tests have failed. Attached are the test logs.", 
+                        to: 'aditiagarwall1603@gmail.com', 
+                        subject: "Unit and Integration Tests Failed",
+                        attachmentsPattern: 'test.log', 
+                        attachLog: true 
+                    }
+                }
+            }
+
         stage('Code Analysis') {
             steps {
-                // Integrate a code analysis tool like SonarQube
-                sh 'sonar-scanner'
+                echo "Integration tests"
+                echo "SonarQube Scanner for Jenkins plugin"
             }
         }
+
         stage('Security Scan') {
             steps {
-                // Integrate a security scanning tool like OWASP ZAP
-                sh 'owasp-zap-scan.sh'
+                echo "Perform scan to find vulnerabilities"
+                echo "OWASP Dependency-Check plugin"
+            }
+            post {
+                success {
+                        emailext body: "Security Scan has completed successfully.Attached are the test logs", 
+                        to: 'aditiagarwall1603@gmail.com', 
+                        subject: "Security Scan Successful",
+                        attachmentsPattern: 'test.log', 
+                        attachLog: true 
+                    }
+                failure {
+                        emailext body: "Security Scan has failed.", 
+                        to: 'aditiagarwall1603@gmail.com', 
+                        subject: "Security Scan Failed",
+                        attachmentsPattern: 'test.log', 
+                        attachLog: true 
+                }
             }
         }
+
+
         stage('Deploy to Staging') {
             steps {
-                // Use deployment scripts to deploy to a staging server
-                sh 'deploy_to_staging.sh'
+                echo "Deploy application staging server"
+                echo "Use tool such as AWS"
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on the staging environment
-                sh 'run_integration_tests_staging.sh'
+                echo "run integration test"
+                echo "Use tool such as JUnit"
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                // Use deployment scripts to deploy to a production server
-                sh 'deploy_to_production.sh'
+                echo "deploy application"
+                echo "use AWS"
             }
-        }
-    }
-    post {
-        success {
-            // Send notification email on success
-            emailext(
-                subject: "Pipeline Success",
-                body: "The Jenkins pipeline has completed successfully.",
-                to: 'your@email.com',
-                attachLog: true
-            )
-        }
-        failure {
-            // Send notification email on failure
-            emailext(
-                subject: "Pipeline Failure",
-                body: "The Jenkins pipeline has failed. Please investigate.",
-                to: 'your@email.com',
-                attachLog: true
-            )
         }
     }
 }
